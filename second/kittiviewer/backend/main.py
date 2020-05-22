@@ -211,11 +211,22 @@ def inference_by_idx():
     locs = box3d[:, :3]
     dims = box3d[:, 3:6]
     rots = np.concatenate([np.zeros([locs.shape[0], 2], dtype=np.float32), -box3d[:, 6:7]], axis=1)
+    
+    labels = pred["scores"].detach().cpu().numpy()
+    scores = pred["label_preds"].detach().cpu().numpy()
+    mask = scores > 0.2
+    locs = locs[mask]
+    dims = dims[mask]
+    rots = rots[mask]
+    labels = labels[mask]
+    scores = scores[mask]
+    
     response["dt_locs"] = locs.tolist()
     response["dt_dims"] = dims.tolist()
     response["dt_rots"] = rots.tolist()
-    response["dt_labels"] = pred["label_preds"].detach().cpu().numpy().tolist()
-    response["dt_scores"] = pred["scores"].detach().cpu().numpy().tolist()
+    response["dt_labels"] = labels.tolist()
+    response["dt_scores"] = scores.tolist()
+    
 
     response = jsonify(results=[response])
     response.headers['Access-Control-Allow-Headers'] = '*'
