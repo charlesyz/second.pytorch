@@ -444,6 +444,10 @@ def evaluate(config_path,
     please use kitti_anno_to_label_file and convert_detection_to_kitti_annos
     in second.data.kitti_dataset.
     """
+    # Force batch size 2
+    if batch_size == 1:
+        batch_size = 2
+    
     assert len(kwargs) == 0
     model_dir = str(Path(model_dir).resolve())
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

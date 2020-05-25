@@ -59,9 +59,9 @@ def second_box_encode(boxes,
     xt = (xg - xa) / diagonal
     yt = (yg - ya) / diagonal
     zt = (zg - za) / ha  # 1.6
-    lt = np.log(lg / (la + eps) + eps)
-    wt = np.log(wg / (wa + eps) + eps)
-    ht = np.log(hg / (ha + eps) + eps)
+    lt = np.log(lg / la + eps)
+    wt = np.log(wg / wa + eps)
+    ht = np.log(hg / ha + eps)
     rt = rg - ra
     cts = [g - a for g, a in zip(cgs, cas)]
     if smooth_dim:
@@ -69,9 +69,9 @@ def second_box_encode(boxes,
         wt = wg / wa - 1
         ht = hg / ha - 1
     else:
-        lt = np.log(lg / (la + eps) + eps)
-        wt = np.log(wg / (wa + eps) + eps)
-        ht = np.log(hg / (ha + eps) + eps)
+        lt = np.log(lg / la + eps)
+        wt = np.log(wg / wa + eps)
+        ht = np.log(hg / ha + eps)
     if encode_angle_to_vector:
         rgx = np.cos(rg)
         rgy = np.sin(rg)
@@ -156,8 +156,8 @@ def bev_box_encode(boxes,
         lt = lg / la - 1
         wt = wg / wa - 1
     else:
-        lt = np.log(lg / (la + eps) + eps)
-        wt = np.log(wg / (wa + eps) + eps)
+        lt = np.log(lg / la + eps)
+        wt = np.log(wg / wa + eps)
     if encode_angle_to_vector:
         rgx = np.cos(rg)
         rgy = np.sin(rg)

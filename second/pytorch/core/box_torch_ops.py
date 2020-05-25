@@ -39,9 +39,9 @@ def second_box_encode(boxes, anchors, encode_angle_to_vector=False, smooth_dim=F
         wt = wg / wa - 1
         ht = hg / ha - 1
     else:
-        lt = torch.log(lg / (la + eps) + eps)
-        wt = torch.log(wg / (wa + eps) + eps)
-        ht = torch.log(hg / (ha + eps) + eps)
+        lt = torch.log(lg / la + eps)
+        wt = torch.log(wg / wa + eps)
+        ht = torch.log(hg / ha + eps)
     if encode_angle_to_vector:
         rgx = torch.cos(rg)
         rgy = torch.sin(rg)
@@ -118,8 +118,8 @@ def bev_box_encode(boxes, anchors, encode_angle_to_vector=False, smooth_dim=Fals
         lt = lg / la - 1
         wt = wg / wa - 1
     else:
-        lt = torch.log(lg / (la + eps) + eps)
-        wt = torch.log(wg / (wa + eps) + eps)
+        lt = torch.log(lg / la + eps)
+        wt = torch.log(wg / wa + eps)
     if encode_angle_to_vector:
         rgx = torch.cos(rg)
         rgy = torch.sin(rg)

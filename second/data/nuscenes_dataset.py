@@ -359,7 +359,7 @@ class NuScenesDataset(Dataset):
         }
         res_path = Path(output_dir) / "results_nusc.json"
         with open(res_path, "w") as f:
-            json.dump(nusc_submissions, f)
+            json.dump(nusc_submissions, f, indent=2)
         eval_main_file = Path(__file__).resolve().parent / "nusc_eval.py"
         # why add \"{}\"? to support path with spaces.
         cmd = f"python {str(eval_main_file)} --root_path=\"{str(self._root_path)}\""
@@ -371,7 +371,7 @@ class NuScenesDataset(Dataset):
         with open(Path(output_dir) / "metrics_summary.json", "r") as f:
             metrics = json.load(f)
         detail = {}
-        res_path.unlink()  # delete results_nusc.json since it's very large
+        #res_path.unlink()  # delete results_nusc.json since it's very large
         result = f"Nusc {version} Evaluation\n"
         for name in mapped_class_names:
             detail[name] = {}
@@ -561,6 +561,9 @@ def _lidar_nusc_box_to_global(info, boxes, classes, eval_version="detection_cvpr
         radius = np.linalg.norm(box.center[:2], 2)
         det_range = cls_range_map[classes[box.label]]
         if radius > det_range:
+            continue
+        if np.sum(box.wlh) == 0:
+            print("ZERO BOX")
             continue
         # Move box to global coord system
         box.rotate(pyquaternion.Quaternion(info['ego2global_rotation']))
